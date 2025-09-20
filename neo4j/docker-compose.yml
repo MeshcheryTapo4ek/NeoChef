@@ -1,0 +1,19 @@
+services:
+  neo4j:
+    build: .
+    container_name: neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    # Docker Compose will automatically read the .env file in the project root
+    # and substitute the variables below.
+    environment:
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+      NEO4J_AUTH: "${NEO4J_USER}/${NEO4J_PASSWORD}"
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - ./neo4j_mounted/data:/var/lib/neo4j/data
+      - ./neo4j_mounted/logs:/var/lib/neo4j/logs
+      - ./neo4j_mounted/plugins:/var/lib/neo4j/plugins
+      - ./neo4j_mounted/import:/var/lib/neo4j/import
+    restart: unless-stopped
